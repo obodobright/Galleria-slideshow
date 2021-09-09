@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: rgb(170, 191, 199)
+}
+
+img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.container {
+    margin: 1em;
+    background: white;
+    padding: 0.5em;
+    width: 250px;
+    display: flex;
+    border-radius: 0.5em;
+}
+
+.user-info {
+    margin-left: 0.5em
+}
