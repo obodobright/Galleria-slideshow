@@ -1,26 +1,30 @@
 import React, { useState } from "react";
 
 const Form = () => {
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
   const [user, setUser] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [person, setPerson] = useState({
+    firstname: "",
+    email: "",
+    age: "",
+  });
+  
+  const handleOnChange = (e) =>{
+      const name = e.target.name
+      const value = e.target.value
+      setPerson({...person,[name]:value})
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-   if(firstName && email){
-       const person = {firstName, email}
-      setUser((user) =>{
-          return [...user, person]
-      })
-   }
-   else{
-       console.log('empty value')
-   }
-setLoading(true)
-  };
-  if(loading){
-      return <p>Loading</p>
+  const handleSubmit = (e) =>{
+e.preventDefault()
+if(person.firstname && person.email && person.age){
+  const newPerson = {...person, id: new Date().getTime().toString()}
+  setUser([...user, newPerson])
+}
+setPerson({
+  firstname:'',
+  email:'',
+  age:''
+})
   }
   return (
     <React.Fragment>
@@ -29,10 +33,10 @@ setLoading(true)
           <label htmlFor="firstName">Name : </label>
           <input
             type="text"
-            name="firstName"
+            name="firstname"
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={person.firstname}
+            onChange={handleOnChange}
             style={formControl}
           />
         </div>
@@ -40,36 +44,47 @@ setLoading(true)
           <label htmlFor="email">Email : </label>
           <input
             type="email"
-            name="Email"
+            name="email"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={person.email}
+            onChange={handleOnChange}
+            style={formControl}
+          />
+        </div>
+        <div>
+          <label htmlFor="age">Age: </label>
+          <input
+            type="text"
+            name="age"
+            id="age"
+            value={person.age}
+            onChange={handleOnChange}
             style={formControl}
           />
         </div>
         <button type="submit">Add Person</button>
       </form>
       <div style={formOutput}>
-          <h3>Ouput</h3>
-        <p>
-          {user.map((users) => (
-            <div>
-              <h4>{users.firstName}</h4>
-              <span>{users.email}</span>
-            </div>
-          ))}
-        </p>
+        <h3>Ouput</h3>
+
+        {user.map((users) => (
+          <div key={users.id}>
+            <h5>{users.firstname}</h5>
+            <span>{users.email}</span>
+            <p>{users.age}</p>
+          </div>
+        ))}
       </div>
     </React.Fragment>
   );
 };
-const formOutput={
-    background:'pink',
-    padding:'0.5em',
-    margin:'2em',
-    borderRadius:'0.5em',
-    width:'200px'
-}
+const formOutput = {
+  background: "pink",
+  padding: "0.5em",
+  margin: "2em",
+  borderRadius: "0.5em",
+  width: "200px",
+};
 const form = {
   padding: "2em",
   margin: "2em",
