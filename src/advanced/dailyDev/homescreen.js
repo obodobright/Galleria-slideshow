@@ -1,69 +1,133 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./homescreen.css";
-
-import Ib from './image/ib.JPG'
-import Bright from "./image/bright.JPG";
-import Sam from "./image/sam.JPG";
-import Vero from "./image/vero.JPG";
-import Taheebat from "./image/taheebat.JPG";
+import moment from "moment";
+import { IconContext } from "react-icons";
+import { FaTimes } from "react-icons/fa";
+import { MdMoodBad } from "react-icons/md";
+import { RiQuestionnaireFill } from "react-icons/ri";
+import { FaHandPeace } from "react-icons/fa";
+import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 
 const Homescreen = () => {
-    const [data, setData] = useState([
-      {
-        id: 1,
-        name: "Ibukun",
-        quote: "God is  Great",
-        image: Ib,
-        time: Date.now().toLocaleString(),
-      },
-      {
-        id: 2,
-        name: "Taibat",
-        quote: "I love diamonds",
-        image: Taheebat,
-        time: Date.now().toLocaleString(),
-      },
-      {
-        id: 3,
-        name: "Bright",
-        quote: "EWWWWWWWWWEEEEEEEEE!",
-        image: Bright,
-        time: Date.now().toLocaleString(),
-      },
-      {
-        id: 4,
-        name: "Veronica",
-        quote: "God is gracious",
-        image: Vero,
-        time: Date.now().toLocaleString(),
-      },
-      {
-        id: 5,
-        name: "Sam",
-        quote: "Failure is not final",
-        image: Sam,
-        time: Date.now().toLocaleString(),
-      },
-    ]);
+  // Creating the application state
+  const [data, setData] = useState([]);
+  const [userName, setUserName] = useState("");
+  const [userQuote, setUserQuote] = useState("");
+  const [files, setFiles] = useState("https://via.placeholder.com/150");
 
+  // Upload image function
+  const handleUploadImage = (e) => {
+    const fileHolder = e.target.files[0];
+    const saveImage = URL.createObjectURL(fileHolder);
+    setFiles(saveImage);
+  };
+
+  // submit function
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newUser = {
+      id: data.length + 1,
+      name: userName,
+      quote: userQuote,
+      image: files,
+      time: Date.now(),
+    };
+    setData([...data, newUser]);
+    setUserName("");
+    setUserQuote("");
+    setFiles("https://via.placeholder.com/150");
+  };
+
+  // delete function
+  const handleDelete = (id) => {
+    const delUser = data.filter((datum) => datum.id !== id);
+    setData(delUser);
+  };
+  //  useEffect for storage  of Data
+  useEffect(() => {
+    localStorage.setItem("fileHolder", JSON.stringify(data));
+  }, [data]);
+
+  // useEffect for getting data
+  useEffect(() => {
+    const getStoredData = JSON.parse(localStorage.getItem("fileHolder"));
+    setData(getStoredData);
+  }, []);
+
+  // Rendering the UI
   return (
-    <div className="container">
-      <div className="containerWrapper">
-        {data.map((user) => (
-          <div className="containerCard">
-            <div className="containerCardRow">
-              <div className="containerCardRowCancel">x</div>
-              <img className="containerCardRowImage" src={user.image} />
-            </div>
-            <div className="containerCardQuote">
-              {user.quote}
-            </div>
-            <div className="containerCardName">{user.name}</div>
-            <div className="containerCardTime">{user.time}</div>
-          </div>
-        ))}
+    <section>
+      <div className="navbar">
+        <a href="/" className="navbar-brand">
+          What's on your mind <RiQuestionnaireFill />
+        </a>
       </div>
-    </div>
+      <div className="welcome-intro">
+        <h1>
+          Hello there <FaHandPeace />
+        </h1>
+        <h3>We want to hear your stories, as it holds a unique inspiration for another </h3>
+      </div>
+      <div className="container">
+        {/* Form input container */}
+        <form className="inputContainer">
+          <img className="inputImage" src={files} alt="uploadImage" />
+          <div className="inputStyle">
+            <div>
+              <input type="file" onChange={handleUploadImage} />
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Name"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="What's on your mind ?"
+                value={userQuote}
+                onChange={(e) => setUserQuote(e.target.value)}
+              />
+            </div>
+            <button className="button" onClick={handleSubmit}>
+              Submit
+            </button>
+          </div>
+        </form>
+        {/* Result container */}
+        <div className="containerWrapper">
+          {data.map((user) => (
+            <div className="containerCard" key={user.id}>
+              <div className="containerCardRow">
+                <div className="containerCardRowCancel" onClick={() => handleDelete(user.id)}>
+                  <FaTimes />
+                </div>
+                <img className="containerCardRowImage" src={user.image} />
+              </div>
+              <FaQuoteLeft />
+              <div className="containerCardQuote">{user.quote}</div>
+              <FaQuoteRight />
+              <div className="containerCardName">{user.name}</div>
+              <div className="containerCardTime">{moment(user.time).fromNow()}</div>
+            </div>
+          ))}
+          {/* Condition rendering to state if there are post in the application */}
+          {data.length === 0 && (
+            <div className="text-center m-4" style={{ color: "#000064" }}>
+              <IconContext.Provider value={{ className: "moodBtn" }}>
+                <MdMoodBad />
+              </IconContext.Provider>
+
+              <h1>No available post</h1>
+              <h3>Create new Post</h3>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   );
 };
 export default Homescreen;

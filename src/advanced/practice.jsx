@@ -15,6 +15,11 @@ const Practice = () => {
   //   setUser(user);
   //   setLoading(false);
   // };
+
+
+  useEffect(()=>{
+updataSearch()
+  }, [])
   useEffect(() => {
     fetch(url)
     .then((res)=> {
