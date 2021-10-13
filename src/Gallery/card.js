@@ -50,12 +50,18 @@ const Card = styled(Link)`
   width: 300px;
   height: 300px;
   background: transparent;
-  transition: all 350ms;
+  transition: all 400ms;
+  transfor: scale(1);
   position: relative;
+  margin: 10px 5px;
 
+  @media (max-width: 326px) {
+    visibility: hidden;
+  }
   :hover {
     cursor: pointer;
-    box-shadow: 0px 16px 16px -10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 16px 16px -10px rgb(255, 255, 255);
+    transform: scale(1.02);
   }
 `;
 const Wrapper = styled.div`
@@ -69,5 +75,5 @@ const Wrapper = styled.div`
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background: whitesmoke;
+  background: black;
 `;

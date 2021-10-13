@@ -14,12 +14,12 @@ const GalleryDetail = () => {
     <Container>
       <Wrapper>
         <ImageContainer>
-          <Image src={myGallery.images.gallery} />
+          <Image src={myGallery.gallery} />
           <NameTitle>
             <Name>{myGallery.name}</Name>
-            <ArtistName>{myGallery.artist.name}</ArtistName>
+            <ArtistName>{myGallery.artistName}</ArtistName>
           </NameTitle>
-          <ArtistImage src={myGallery.name} />
+          <ArtistImage src={myGallery.image} />
         </ImageContainer>
         <Content>
           <Year>{myGallery.year}</Year>
@@ -33,18 +33,18 @@ const GalleryDetail = () => {
 
 export default GalleryDetail;
 const ArtistImage = styled.img`
-  width: 100px;
-  height: 100px;
-  background: blue;
+  width: 150px;
+  height: 120px;
+  background: transparent;
   position: absolute;
-  right: -150px;
+  right: -170px;
   object-fit: cover;
   bottom: 0;
 `;
 const Name = styled.div`
   font-size: 30px;
   font-weight: bold;
-  width: 100px;
+  width: 130px;
   line-height: 1;
 `;
 const ArtistName = styled.div``;
@@ -52,15 +52,13 @@ const ArtistName = styled.div``;
 const NameTitle = styled.div`
   position: absolute;
   top: 20px;
-  right: -200px;
+  right: -180px;
   background: white;
   width: 250px;
   height: 170px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  flex-direction: column;
 `;
 
 const Year = styled.div`
@@ -93,7 +91,7 @@ const Image = styled.img`
   top: 0;
 `;
 const ImageContainer = styled.div`
-  width: 350px;
+  width: 300px;
   height: 400px;
   padding: 0 20px;
   position: relative;
@@ -113,6 +111,7 @@ const Wrapper = styled.div`
   padding: 10px 0;
   align-items: center;
   padding: 0 20px;
+  flex-wrap: wrap;
 `;
 const Container = styled.div`
   width: 100%;
